@@ -1,13 +1,12 @@
-docker-liquibase
-================
+## liquibase in docker
 
 Docker image with Liquibase installation.
 
-### Default behavior
+### default behavior
 
 By default runs a simple container with Liquibase:
 
-```docker run -it --name liquibase sequenceiq/liquibase```
+```docker run -it --name liquibase --rm mlaccetti/liquibase```
 
 In the shell you can perform the usual `liquibase` operations.
 
@@ -24,7 +23,7 @@ to automatically perform diff and update operations.
 
 #### diff
 
-```
+```bash
 docker run -it \
 --name $LIQUIBASE_CONTAINER \
 --link $REFERENCE_DB_CONTAINER:db \
@@ -34,14 +33,14 @@ docker run -it \
 -e DB_PASS="$DB_PASS" \
 -e LIQUIBASE_INCLUSION_FILE="$LIQUIBASE_INCLUSION_FILE" \
 -v /$LIQUIBASE_CHANGELOGS:/changelogs \
-sequenceiq/docker-liquibase \
+mlaccetti/liquibase \
 "diff"
 ```
 
 The variables should be set as follows:
 
 LIQUIBASE_CONTAINER - the name of the docker container  
-REFERENCE_DB_CONTAINER - the docker container running a (postgres) database being the reference of the diff command  
+REFERENCE_DB_CONTAINER - the docker container running a (PostgreSQL) database being the reference of the diff command  
 CONNECTION_STRING - the connection to the target database  
 DB_IP - the IP address of the target database  
 DB_NAME - the target database name  
@@ -65,7 +64,7 @@ docker run -it \
 --entrypoint="/scripts/liquibase_command.sh" \
 -v /$LIQUIBASE_CHANGELOGS:/changelogs \
 -e CHANGELOG_FILE=$LIQUIBASE_CHANGELOG_FILE \
-sequenceiq/docker-liquibase\
+mlaccetti/liquibase\
 "update"
 ```
 
@@ -78,24 +77,31 @@ LIQUIBASE_CHANGELOG_FILE - the name of the changelog file to be applied
 
 #### generate
 
-```
+```bash
 docker run -it \
---name $LIQUIBASE_CONTAINER \
---link $DB_CONTAINER:db \
---entrypoint="/scripts/liquibase_command.sh" \
--v /$LIQUIBASE_CHANGELOGS:/changelogs \
--e CHANGELOG_FILE=$LIQUIBASE_CHANGELOG_FILE \
--e DB_SCHEMA_NAME=$SCHEMA_NAME \
--e DIFF_TYPES=data \
-sequenceiq/docker-liquibase\
-"generate"
+  --rm \
+  --name liquibase \
+  --link $DB_CONTAINER:db \
+  --entrypoint="/scripts/liquibase_command.sh" \
+  -v $LIQUIBASE_CHANGELOGS:/changelogs \
+  -e CHANGELOG_FILE=$LIQUIBASE_CHANGELOG_FILE \
+  -e DB_HOST=$DB_HOST \
+  -e DB_PORT=$DB_PORT \
+  -e DB_NAME=$DB_NAME \
+  -e DB_ENV_POSTGRES_USER=$DB_USERNAME \
+  -e DB_ENV_POSTGRES_PASSWORD=$DB_PASSWORD \
+  -e DB_SCHEMA_NAME=$DB_SCHEMA_NAME \
+  -e DIFF_TYPES=data \
+  mlaccetti/liquibase \
+  "generate"
+
 ```
 
 Variables:
 
-LIQUIBASE_CONTAINER - the name of the docker container
-DB_CONTAINER - the container name running the target database
-LIQUIBASE_CHANGELOGS - volume with the changelogs to be applied
-LIQUIBASE_CHANGELOG_FILE - the name of the changelog file to be applied
-SCHEMA_NAME(optional) - which schema to run against
-DIFF_TYPES(optional) - which diff type to use
+LIQUIBASE_CONTAINER - the name of the docker container  
+DB_CONTAINER - the container name running the target database  
+LIQUIBASE_CHANGELOGS - volume with the changelogs to be applied  
+LIQUIBASE_CHANGELOG_FILE - the name of the changelog file to be applied  
+SCHEMA_NAME(optional) - which schema to run against  
+DIFF_TYPES(optional) - which diff type to use  

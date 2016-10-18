@@ -1,33 +1,35 @@
-FROM java
+FROM openjdk:8-jdk-alpine
 
-MAINTAINER SequenceIq
+MAINTAINER Michael Laccetti <michael@laccetti.com> (https://laccetti.com/)
 
-# download liquibase
-# ADD http://sourceforge.net/projects/liquibase/files/Liquibase%20Core/liquibase-3.2.2-bin.tar.gz/download /tmp/liquibase-3.2.2-bin.tar.gz
-COPY lib/liquibase-3.2.2-bin.tar.gz /tmp/liquibase-3.2.2-bin.tar.gz
+RUN apk add --update curl bash && \
+  rm -rf /var/cache/apk/*
 
 # Create a directory for liquibase
-RUN mkdir /opt/liquibase
+RUN mkdir -p /opt/liquibase /opt/jdbc_drivers
+
+WORKDIR /opt/liquibase
+
+# Grab liquibase
+RUN curl -LS \
+  https://github.com/liquibase/liquibase/releases/download/liquibase-parent-3.5.3/liquibase-3.5.3-bin.tar.gz \
+  -o /tmp/liquibase-bin.tar.gz
 
 # Unpack the distribution
-RUN tar -xzf /tmp/liquibase-3.2.2-bin.tar.gz -C /opt/liquibase
-RUN chmod +x /opt/liquibase/liquibase
+RUN tar zxvf /tmp/liquibase-bin.tar.gz -C /opt/liquibase && \
+  chmod +x /opt/liquibase/liquibase && \
+  rm /tmp/liquibase-bin.tar.gz && \
+  ln -s /opt/liquibase/liquibase /usr/local/bin/
 
-# Symlink to liquibase to be on the path
-RUN ln -s /opt/liquibase/liquibase /usr/local/bin/
-
-# Get the postgres JDBC driver from http://jdbc.postgresql.org/download.html
-# ADD http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar /opt/jdbc_drivers/
-COPY lib/postgresql-9.3-1102.jdbc41.jar /opt/jdbc_drivers/
-
-RUN ln -s /opt/jdbc_drivers/postgresql-9.3-1102.jdbc41.jar /usr/local/bin/
+# Get the postgres JDBC driver
+RUN curl -LS \
+  https://search.maven.org/remotecontent?filepath=org/postgresql/postgresql/9.4.1211/postgresql-9.4.1211.jar \
+  -o /opt/jdbc_drivers/postgresql.jar
 
 # Add command scripts
 ADD scripts /scripts
 RUN chmod -R +x /scripts
 
-VOLUME ["/changelogs"]
-
-WORKDIR /
+VOLUME /changelogs
 
 ENTRYPOINT ["/bin/bash"]
