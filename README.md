@@ -2,6 +2,10 @@
 
 Docker image with Liquibase installation.
 
+### quickstart
+
+Check out the `examples` folder for a sample of scripts for Windows/\*NIX that demonstrate the easiest way to get this up and running.
+
 ### default behavior
 
 By default runs a simple container with Liquibase:
