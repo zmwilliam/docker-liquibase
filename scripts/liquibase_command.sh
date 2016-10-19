@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-echo "Setting up liquibase..."
+echo "Setting up liquibase ..."
 ./scripts/liquibase_setup.sh
 
 echo "Processing liquibase tasks ..."

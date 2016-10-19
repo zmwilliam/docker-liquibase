@@ -27,9 +27,9 @@ RUN curl -LS \
   -o /opt/jdbc_drivers/postgresql.jar
 
 # Add command scripts
-ADD scripts /scripts
-RUN chmod -R +x /scripts
+ADD scripts /opt/liquibase/scripts
+RUN chmod -R +x /opt/liquibase/scripts
 
 VOLUME /changelogs
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["./scripts/liquibase_command.sh"]
