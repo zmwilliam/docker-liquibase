@@ -5,8 +5,13 @@
 : ${DB_PASS?"Please provide the database password"}
 
 TS=$(date +%s)
+BASE_FILENAME=$(basename "$CHANGELOG_FILE")
+DIR=$(dirname "$CHANGELOG_FILE")
+FILE_EXT="${BASE_FILENAME##*.}"
+FILE_NAME="${BASE_FILENAME%.*}"
+
 echo "Generating diff..."
-liquibase --changeLogFile="$CHANGELOG_FILE-$TS" diffChangeLog \
+liquibase --changeLogFile="$DIR/$FILE_NAME-$TS.$FILE_EXT" diffChangeLog \
   --referenceUrl=$CONNECTION_STRING \
   --referenceUsername=$DB_USER \
   --referencePassword=$DB_PASS
