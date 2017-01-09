@@ -1,7 +1,8 @@
 #!/bin/bash
 : ${CHANGELOG_FILE:="changelog_diff.xml"}
 
-TS=$(date +%s)BASE_FILENAME=$(basename "$CHANGELOG_FILE")
+TS=$(date +%s)
+BASE_FILENAME=$(basename "$CHANGELOG_FILE")
 DIR=$(dirname "$CHANGELOG_FILE")
 FILE_EXT="${BASE_FILENAME##*.}"
 FILE_NAME="${BASE_FILENAME%.*}"
