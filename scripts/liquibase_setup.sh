@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Setting up liquibase ...."
+echo "Setting up liquibase..."
 : ${DB_ENV_POSTGRES_USER?"DB_ENV_POSTGRES_USER not set"}
 : ${DB_ENV_POSTGRES_PASSWORD?"DB_ENV_POSTGRES_PASSWORD not set"}
 
@@ -12,4 +12,4 @@ cat <<CONF > /opt/liquibase/liquibase.properties
   logLevel: info
 CONF
 
-echo "Setup complete ...."
+echo "Setup complete."
