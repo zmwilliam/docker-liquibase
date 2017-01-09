@@ -10,4 +10,4 @@ FILE_NAME="${BASE_FILENAME%.*}"
 echo "Generating changelog..."
 liquibase --diffTypes="$DIFF_TYPES" --defaultSchemaName="$DB_SCHEMA_NAME" --changeLogFile="$DIR/$TS-$FILE_NAME.$FILE_EXT" generateChangeLog
 
-echo "Changelog generated into: $CHANGELOG_FILE-$TS."
+echo "Changelog generated into: $DIR/$TS-$FILE_NAME.$FILE_EXT."

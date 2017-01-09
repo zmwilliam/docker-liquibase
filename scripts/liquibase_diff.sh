@@ -16,14 +16,14 @@ liquibase --changeLogFile="$DIR/$TS-$FILE_NAME.$FILE_EXT" diffChangeLog \
   --referenceUsername=$DB_USER \
   --referencePassword=$DB_PASS
 
-echo "Diff generated into $CHANGELOG_FILE-$TS."
+echo "Diff generated into $DIR/$TS-$FILE_NAME.$FILE_EXT."
 
 if [ ! -z "$LIQUIBASE_INCLUSION_FILE" ] ; then
   if [ -f "$LIQUIBASE_INCLUSION_FILE" ] ; then
     echo "Include newly generated file into the list of changesets";
     sed -i "
       /<\/databaseChangeLog>/ i\
-      <include relativeToChangelogFile='true' file=\"$CHANGELOG_FILE-$TS\" />" "$LIQUIBASE_INCLUSION_FILE"
+      <include relativeToChangelogFile='true' file=\"$DIR/$TS-$FILE_NAME.$FILE_EXT\" />" "$LIQUIBASE_INCLUSION_FILE"
   else
     echo "Liquibase include file doesn't exist: $LIQUIBASE_INCLUSION_FILE"
   fi
