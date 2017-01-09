@@ -11,7 +11,7 @@ FILE_EXT="${BASE_FILENAME##*.}"
 FILE_NAME="${BASE_FILENAME%.*}"
 
 echo "Generating diff..."
-liquibase --changeLogFile="$DIR/$FILE_NAME-$TS.$FILE_EXT" diffChangeLog \
+liquibase --changeLogFile="$DIR/$TS-$FILE_NAME.$FILE_EXT" diffChangeLog \
   --referenceUrl=$CONNECTION_STRING \
   --referenceUsername=$DB_USER \
   --referencePassword=$DB_PASS
