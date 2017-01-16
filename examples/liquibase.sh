@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
 
-DB_CONTAINER="some_postgresql_container"
+CONTAINER_NAME="mlaccetti-liquibase"
+REFERENCE_DB_CONTAINER="some_postgresql_container"
 LIQUIBASE_CHANGELOGS="$(pwd)/db/changelog"
 LIQUIBASE_CHANGELOG_FILE="db.changelog.postgresql.sql"
-DB_HOST="db"
-DB_PORT="5432"
-DB_NAME="some-db"
-DB_USERNAME="username"
-DB_PASSWORD="password"
+DB_CONNECTION_USERNAME="username"
+DB_CONNECTION_PASSWORD="password"
+DB_CONNECTION_HOST="db"
+DB_CONNECTION_PORT="5432"
+DB_CONNECTION_NAME="some-db"
 DB_SCHEMA_NAME="public"
+DIFF_TYPES="data"
 
-docker run -it \
-  --rm \
-  --name mlaccetti-liquibase \
-  --link ${DB_CONTAINER}:db \
-  -v ${LIQUIBASE_CHANGELOGS}:/changelogs \
-  -e CHANGELOG_FILE=${LIQUIBASE_CHANGELOG_FILE} \
-  -e DB_HOST=${DB_HOST} \
-  -e DB_PORT=${DB_PORT} \
-  -e DB_NAME=${DB_NAME} \
-  -e DB_ENV_POSTGRES_USER=${DB_USERNAME} \
-  -e DB_ENV_POSTGRES_PASSWORD=${DB_PASSWORD} \
+docker run -it --rm \
+  --name ${CONTAINER_NAME} \
+  --link ${REFERENCE_DB_CONTAINER}:db \
+  -e DB_CONNECTION_USERNAME="${DB_CONNECTION_USERNAME}" \
+  -e DB_CONNECTION_PASSWORD="${DB_CONNECTION_PASSWORD}" \
+  -e DB_CONNECTION_HOST="${DB_CONNECTION_HOST}" \
+  -e DB_CONNECTION_PORT="${DB_CONNECTION_PORT}" \
+  -e DB_CONNECTION_NAME="${DB_CONNECTION_NAME}" \
+  -v /${LIQUIBASE_CHANGELOGS}:/changelogs \
   -e DB_SCHEMA_NAME=${DB_SCHEMA_NAME} \
-  -e DIFF_TYPES=data \
+  -e DIFF_TYPES=${DIFF_TYPES} \
   mlaccetti/liquibase \
   "generate"
