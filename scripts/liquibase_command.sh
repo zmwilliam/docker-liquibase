@@ -13,4 +13,7 @@ case "$1" in
     "generate" )
         ./scripts/liquibase_generate.sh
         ;;
+    * )
+        exec "$@"
+        ;;
 esac
