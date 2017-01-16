@@ -13,8 +13,8 @@ cat <<CONF > /opt/liquibase/liquibase.properties
   driver: org.postgresql.Driver
   classpath:/opt/jdbc_drivers/postgresql.jar
   url: jdbc:postgresql://$DB_CONNECTION_HOST:$DB_CONNECTION_PORT/$DB_CONNECTION_NAME
-  username: DB_CONNECTION_USERNAME
-  password: DB_CONNECTION_PASSWORD
+  username: $DB_CONNECTION_USERNAME
+  password: $DB_CONNECTION_PASSWORD
   logLevel: info
 CONF
 
