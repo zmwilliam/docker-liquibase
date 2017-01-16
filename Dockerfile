@@ -12,19 +12,15 @@ WORKDIR /opt/liquibase
 
 # Grab liquibase
 RUN curl -LS \
-  https://github.com/liquibase/liquibase/releases/download/liquibase-parent-3.5.3/liquibase-3.5.3-bin.tar.gz \
-  -o /tmp/liquibase-bin.tar.gz
-
-# Unpack the distribution
-RUN tar zxvf /tmp/liquibase-bin.tar.gz -C /opt/liquibase && \
-  chmod +x /opt/liquibase/liquibase && \
-  rm /tmp/liquibase-bin.tar.gz && \
-  ln -s /opt/liquibase/liquibase /usr/local/bin/
+    https://github.com/liquibase/liquibase/releases/download/liquibase-parent-3.5.3/liquibase-3.5.3-bin.tar.gz \
+    | tar -xz && \
+    chmod +x /opt/liquibase/liquibase && \
+    ln -s /opt/liquibase/liquibase /usr/local/bin/
 
 # Get the postgres JDBC driver
 RUN curl -LS \
-  https://search.maven.org/remotecontent?filepath=org/postgresql/postgresql/9.4.1211/postgresql-9.4.1211.jar \
-  -o /opt/jdbc_drivers/postgresql.jar
+    https://search.maven.org/remotecontent?filepath=org/postgresql/postgresql/9.4.1211/postgresql-9.4.1211.jar \
+    -o /opt/jdbc_drivers/postgresql.jar
 
 # Add command scripts
 ADD scripts /opt/liquibase/scripts
