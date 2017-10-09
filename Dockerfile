@@ -19,7 +19,7 @@ RUN curl -LS \
     chmod +x /opt/liquibase/liquibase && \
     ln -s /opt/liquibase/liquibase /usr/local/bin/
 
-ENV POSTGRESQL_VERSION 9.4.1212
+ENV POSTGRESQL_VERSION 42.1.4
 
 # Get the postgres JDBC driver
 RUN curl -LS \
