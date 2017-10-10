@@ -1,6 +1,6 @@
 FROM openjdk:8-jre-alpine
 
-MAINTAINER Joshua Vaughn <thematrimix@yahoo.com>
+LABEL maintainer="zmwilliam"
 
 RUN apk add --update curl bash && \
     rm -rf /var/cache/apk/*
@@ -29,6 +29,7 @@ RUN curl -LS \
 # Add command scripts
 ADD scripts /opt/liquibase/scripts
 RUN chmod -R +x /opt/liquibase/scripts
+RUN ln -s /opt/liquibase/scripts/liquibase_command /usr/local/bin/liquibasecmd
 
 VOLUME /changelogs
 
