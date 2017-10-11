@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -o errexit
+set -o pipefail
+set -o nounset
+
 : ${CHANGELOG_FILE:="changelog_diff.xml"}
 : ${REFERENCE_URL? "please provide the connection string of the reference database"}
 : ${REFERENCE_USERNAME?"Please provide the reference database username"}

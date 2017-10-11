@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -o errexit
+set -o pipefail
+set -o nounset
+
 echo "Setting up liquibase..."
 : ${DATABASE_USERNAME?"ERROR > DATABASE_USERNAME is not set"}
 : ${DATABASE_PASSWORD?"ERROR > DATABASE_PASSWORD is not set"}

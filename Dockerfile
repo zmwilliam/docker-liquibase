@@ -29,8 +29,8 @@ RUN curl -LS \
 # Add command scripts
 ADD scripts /opt/liquibase/scripts
 RUN chmod -R +x /opt/liquibase/scripts
-RUN ln -s /opt/liquibase/scripts/liquibase_command /usr/local/bin/liquibasecmd
+RUN ln -s /opt/liquibase/scripts/* /usr/local/bin/
 
 VOLUME /changelogs
 
-ENTRYPOINT ["./scripts/liquibase_command.sh"]
+#ENTRYPOINT ["liquibase_command.sh"]
